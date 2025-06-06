@@ -3,13 +3,13 @@ import sys
 import numpy
 from setuptools import Extension, find_packages, setup
 from distutils.sysconfig import get_config_vars
-from distutils.version import LooseVersion
+from packaging.version import Version
 import platform
 
 
 major_version = 0
 minor_version = 1
-subminor_version = 5
+subminor_version = 6
 version = f'{major_version}.{minor_version}.{subminor_version}'
 extra_compile_args = []
 
@@ -19,7 +19,7 @@ def is_platform_mac():
 
 
 # Build for at least macOS 10.9 when compiling on a 10.9 system or above,
-# overriding CPython distuitls behaviour which is to target the version that
+# overriding CPython distutils behaviour which is to target the version that
 # python was built for. This may be overridden by setting
 # MACOSX_DEPLOYMENT_TARGET before calling setup.py
 if is_platform_mac():
@@ -29,8 +29,8 @@ if is_platform_mac():
             "MACOSX_DEPLOYMENT_TARGET", current_system
         )
         if (
-            LooseVersion(python_target) < "10.9"
-            and LooseVersion(current_system) >= "10.9"
+            Version(python_target) < Version("10.9")
+            and Version(current_system) >= Version("10.9")
         ):
             os.environ["MACOSX_DEPLOYMENT_TARGET"] = "10.9"
 
@@ -58,8 +58,7 @@ module = Extension(
              'src/symmetrization.cpp',
              'src/unimodular_functions.cpp',
              'src/auguste_module.cpp'],
-    include_dirs=[os.path.join(numpy.get_include(), 'numpy'),
-                  'src'],
+    include_dirs=[numpy.get_include(), 'src'],
     extra_compile_args=extra_compile_args,
     language='c++'
 )
@@ -74,5 +73,5 @@ setup(name='auguste',
       url='https://github.com/pmla/auguste',
       long_description_content_type='text/markdown',
       long_description=long_description,
-      install_requires=['numpy'],
+      install_requires=['numpy>=1.26'],
       packages=find_packages())
