@@ -22,8 +22,7 @@ SOFTWARE.*/
 
 
 #include <Python.h>
-#include <ndarraytypes.h>
-#include <arrayobject.h>
+#include <numpy/arrayobject.h>
 #include <stdbool.h>
 #include "symmetrization.h"
 #include "minkowski_reduction.h"
